@@ -1,0 +1,21 @@
+{
+    "type": "Fields",
+    "title": {
+        "type": "Variants",
+        "*": {
+            "type": "text",
+            "text": "This is long title"
+        },
+        "mini": {
+            "type": "text",
+            "text": "This is short title"
+        }
+    },
+    "body": {
+        "type": "document",
+        "items": [{
+            "type": "paragraph",
+            "text": "Lorem ipsum"
+            }]
+    }
+}
