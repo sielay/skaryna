@@ -44,9 +44,11 @@ export class Injector extends Emitter {
             self = this,
             div = document.createElement('div');
 
-        div.innerHTML = '<div data-skaryna-tooltip="left"><div></div><div></div></div>';
+        div.innerHTML = '<skaryna><div data-skaryna-tooltip="left"><div></div><div></div></div></skaryna>';
 
         this.element = div.firstChild;
+
+        div = this.element.firstChild;
 
         allowedNodes.forEach(node => {
             let action = document.createElement('a'),
@@ -66,11 +68,10 @@ export class Injector extends Emitter {
             action.addEventListener('mousedown', (event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                console.log(node);
                 self.emit('injectnode', node);
 
             }, true);
-            this.element.children[1].appendChild(action);
+            div.children[1].appendChild(action);
         });
 
         if (!styles) {
@@ -168,5 +169,16 @@ export class Injector extends Emitter {
 
             document.body.appendChild(styles);
         }
+    }
+
+    goTo(x, y) {
+        setTimeout(() => {
+            let
+                div = this.element.firstChild,
+                injectorBox = div.getBoundingClientRect();
+            div.style.top = y + 'px';
+            div.style.left = (x - injectorBox.width) + 'px';
+        }, 0);
+
     }
 }

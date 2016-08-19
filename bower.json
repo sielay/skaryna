@@ -1,4 +1,4 @@
-{
+  {
   "name": "skaryna",
   "description": "What You See is What You Mean editor inspired by projects like Medium-Editor, Lackey and ProseMirror",
   "main": "index.js",

@@ -28,6 +28,15 @@ import {
 }
 from './emitter';
 
+import {
+    diff
+}
+from 'jsondiffpatch';
+import {
+    toPOM
+}
+from './serializer/toPOM';
+
 export const CHANGE = 'change';
 export const DEFAULT_DOCUMENT = '#default';
 
@@ -49,7 +58,11 @@ class Repository extends Emitter {
     }
 
     set(documentId, value) {
+        let previous = this._documents[documentId] || {
+            initial: toPOM(value)
+        };
         this._documents[documentId] = {
+            initial: previous.initial,
             content: value
         };
         this.emit(CHANGE, {
@@ -59,6 +72,34 @@ class Repository extends Emitter {
 
     has(documentId) {
         return !!this._documents[documentId];
+    }
+
+    diff(documentId) {
+        if (!documentId) {
+            let result = {},
+                self = this;
+            return Promise
+                .all(Object
+                    .keys(this._documents)
+                    .map(key => {
+                        return self
+                            .diff(key)
+                            .then(delta => {
+                                result[key] = delta;
+                            });
+                    }))
+                .then(() => result);
+        }
+
+        return Promise
+            .all([
+            this._documents[documentId].initial,
+            toPOM(this._documents[documentId].content)
+        ])
+            .then(results => {
+                console.log(results);
+                return diff(results[0], results[1]);
+            });
     }
 
     toJSON() {

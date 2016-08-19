@@ -35,6 +35,7 @@ const gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     express = require('express'),
+    sass = require('gulp-sass'),
     gutil = require('gulp-util'),
     chalk = require('chalk'),
     istanbul = require('gulp-istanbul'),
@@ -79,8 +80,14 @@ gulp.task('babelify', function () {
         .pipe(gulp.dest('./build'));
 });
 
+gulp.task('sass', () => {
+    return gulp.src('style.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('test/html'));
+});
+
 // Without watchify
-gulp.task('browserify', function () {
+gulp.task('browserify', ['sass'], function () {
     var bundler = browserify('./src/browser.js', {
         debug: true,
     }).transform(babelify, {
@@ -109,7 +116,8 @@ gulp.task('browserify-production', function () {
 gulp.task('watch', () => {
     gulp.watch([
         'src/*.js',
-        'src/**/*.js'
+        'src/**/*.js',
+        'style.scss'
     ], ['browserify']);
 });
 

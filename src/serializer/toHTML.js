@@ -69,13 +69,9 @@ function format(string, formats) {
         apply: []
     });
 
-    console.log(string);
-
     formats.forEach((format) => {
         let from = format.slice[0],
             to = from + format.slice[1];
-
-        console.log(from, to, slices.length);
 
         format.apply.forEach((apply) => {
             if (slices[from].apply.indexOf(apply) == -1) {

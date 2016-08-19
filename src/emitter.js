@@ -110,123 +110,170 @@ function execute(event, config) {
     fn.apply(context || null, params);
 }
 
+/**
+ * Adds listener for an event
+ * @param {string} eventName
+ * @param {function} handler
+ * @param {object} context
+ * @param {array} args
+ * @param {boolean} once
+ */
+function on(eventName, handler, context, args, once) {
+    this.__listeners = this.__listeners || {};
+    this.__listeners[eventName] = this.__listeners[eventName] || [];
+    this.__listeners[eventName].push({
+        fn: handler,
+        context: context,
+        args: args,
+        once: !!once
+    });
+}
+
+/**
+ * Adds listener for an event that should be called once
+ * @param {string} eventName
+ * @param {function} handler
+ * @param {object} context
+ * @param {array} args
+ */
+function once(eventName, handler, context, args) {
+    this.on(eventName, handler, context, args, true);
+}
+
+/**
+ * Adds listener for an event
+ * @param {string} eventName
+ * @param {function} handler
+ * @param {object} context
+ * @param {array} args
+ * @param {boolean} once
+ */
+function off(eventName, handler, context, args, once) {
+    if (!this.__listeners || !this.__listeners[eventName]) {
+        return;
+    }
+    this
+        .getListeners(eventName, handler, context, args, once)
+        .forEach((config) => {
+            this.__listeners[eventName].splice(this.__listeners[eventName].indexOf(config), 1);
+        });
+
+}
+
+/**
+ * Emits an event
+ * @param {string} eventName
+ * @param {mixed} data
+ * @param {Event|null} parent
+ */
+function emit(eventName, data, parent) {
+    if (!this.__listeners || !this.__listeners[eventName]) {
+        return;
+    }
+
+    let self = this,
+        event = new Event(eventName, data, this, parent);
+
+    this
+        .getListeners(eventName)
+        .forEach((config) => {
+            if (config.once === true) {
+                self.off(eventName, config.fn, config.context, config.args, config.once);
+            }
+            execute(event, config);
+        });
+}
+
+/**
+ * Bubbles event to other emitter
+ * @param {string} eventName
+ * @param {object} toEmitter
+ */
+function bubbleEvent(eventName, toEmitter) {
+    this.on(eventName, (event) => {
+        toEmitter.emit(eventName, event.data, event);
+    });
+}
+
+/**
+ * Gets all listeners that match criteria
+ * @param   {string} eventName required
+ * @param   {function} handler   if defined will be used for match
+ * @param   {object} context   if defined will be used for match
+ * @param   {array} args      if defined will be used for match
+ * @returns {array<EventConfig>|null}
+ */
+function getListeners(eventName, handler, context, args) {
+    if (!this.__listeners || !this.__listeners[eventName]) {
+        return null;
+    }
+
+    return this.__listeners[eventName]
+        .map((config) => {
+            if (handler !== undefined && config.fn !== handler) {
+                return false;
+            }
+            if (context !== undefined && config.context !== context) {
+                return false;
+            }
+            if (args !== undefined && config.args !== args) {
+                return false;
+            }
+            return config;
+        })
+        .filter((result) => !!result);
+}
+
 /*
  * @class Emitter
  */
 export class Emitter {
 
-    /**
-     * Adds listener for an event
-     * @param {string} eventName
-     * @param {function} handler
-     * @param {object} context
-     * @param {array} args
-     * @param {boolean} once
-     */
-    on(eventName, handler, context, args, once) {
-        this.__listeners = this.__listeners || {};
-        this.__listeners[eventName] = this.__listeners[eventName] || [];
-        this.__listeners[eventName].push({
-            fn: handler,
-            context: context,
-            args: args,
-            once: !!once
-        });
+    static on() {
+        on.apply(this, arguments);
     }
 
-    /**
-     * Adds listener for an event that should be called once
-     * @param {string} eventName
-     * @param {function} handler
-     * @param {object} context
-     * @param {array} args
-     */
-    once(eventName, handler, context, args) {
-        this.on(eventName, handler, context, args, true);
+    on() {
+        on.apply(this, arguments);
     }
 
-    /**
-     * Adds listener for an event
-     * @param {string} eventName
-     * @param {function} handler
-     * @param {object} context
-     * @param {array} args
-     * @param {boolean} once
-     */
-    off(eventName, handler, context, args, once) {
-        if (!this.__listeners || !this.__listeners[eventName]) {
-            return;
-        }
-        this
-            .getListeners(eventName, handler, context, args, once)
-            .forEach((config) => {
-                this.__listeners[eventName].splice(this.__listeners[eventName].indexOf(config), 1);
-            });
-
+    static once() {
+        once.apply(this, arguments);
     }
 
-    /**
-     * Emits an event
-     * @param {string} eventName
-     * @param {mixed} data
-     * @param {Event|null} parent
-     */
-    emit(eventName, data, parent) {
-        if (!this.__listeners || !this.__listeners[eventName]) {
-            return;
-        }
-
-        let self = this,
-            event = new Event(eventName, data, this, parent);
-
-        this
-            .getListeners(eventName)
-            .forEach((config) => {
-                if (config.once === true) {
-                    self.off(eventName, config.fn, config.context, config.args, config.once);
-                }
-                execute(event, config);
-            });
+    once() {
+        once.apply(this, arguments);
     }
 
-    /**
-     * Bubbles event to other emitter
-     * @param {string} eventName
-     * @param {object} toEmitter
-     */
-    bubbleEvent(eventName, toEmitter) {
-        this.on(eventName, (event) => {
-            toEmitter.emit(eventName, event.data, event);
-        });
+    static off() {
+        off.apply(this, arguments);
     }
 
-    /**
-     * Gets all listeners that match criteria
-     * @param   {string} eventName required
-     * @param   {function} handler   if defined will be used for match
-     * @param   {object} context   if defined will be used for match
-     * @param   {array} args      if defined will be used for match
-     * @returns {array<EventConfig>|null}
-     */
-    getListeners(eventName, handler, context, args) {
-        if (!this.__listeners || !this.__listeners[eventName]) {
-            return null;
-        }
-
-        return this.__listeners[eventName]
-            .map((config) => {
-                if (handler !== undefined && config.fn !== handler) {
-                    return false;
-                }
-                if (context !== undefined && config.context !== context) {
-                    return false;
-                }
-                if (args !== undefined && config.args !== args) {
-                    return false;
-                }
-                return config;
-            })
-            .filter((result) => !!result);
+    off() {
+        off.apply(this, arguments);
     }
 
+    static emit() {
+        emit.apply(this,arguments);
+    }
+
+    emit() {
+        emit.apply(this,arguments);
+    }
+
+    static bubbleEvent() {
+        bubbleEvent.apply(this,arguments);
+    }
+
+    bubbleEvent() {
+        bubbleEvent.apply(this,arguments);
+    }
+
+    static getListeners() {
+        return getListeners.apply(this,arguments);
+    }
+
+    getListeners() {
+        return getListeners.apply(this,arguments);
+    }
 }

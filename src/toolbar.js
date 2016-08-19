@@ -138,7 +138,6 @@ export class Toolbar {
         setTimeout(() => {
             rect = this.element.getBoundingClientRect();
             arrow = this.arrow.getBoundingClientRect();
-            console.log(rect, coords, arrow);
             this.show(coords.x, coords.y - rect.height - 10);
         }, 1);
     }

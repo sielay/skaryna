@@ -41,6 +41,10 @@ import {
 }
 from './serializer/toHTML';
 import {
+    toPOM
+}
+from './serializer/toPOM';
+import {
     fromHTML
 }
 from './parser/fromHTML';
@@ -86,13 +90,14 @@ let toolbar = new Toolbar(),
 
 /**
  * @class
+ * @name Editor
  */
 export class Editor extends Emitter {
 
     /**
-     * [[Description]]
+     * Creates new editor instance
      * @param {HTMLElement} element
-     * @returns {Promise} [[Description]]
+     * @returns {Promise<Editor>} promise of fully loaded and rendered editor
      */
     static factory(element) {
         let editor = new Editor(element);
@@ -105,8 +110,13 @@ export class Editor extends Emitter {
      * @returns {Promise} [[Description]]
      */
     static initEditors(element) {
+        let self = this;
         return Promise.all(arraize(element.querySelectorAll('[data-skaryna]'))
-            .map((element) => Editor.factory(element)));
+                .map((element) => Editor.factory(element)))
+            .then(editors => {
+                self.editors = editors;
+                return editors;
+            });
     }
 
     /**
@@ -182,7 +192,7 @@ export class Editor extends Emitter {
                 }
             })
             .then(() => {
-                self.render();
+                return self.render();
             })
             .catch((error) => {
                 console.log(error);
@@ -214,7 +224,7 @@ export class Editor extends Emitter {
         return caretOffset;
     }
 
-    getSelectionLength(element) {
+    getSelectionLength() {
 
     }
 
@@ -290,20 +300,20 @@ export class Editor extends Emitter {
                 }, true);
                 self.onDOM('[data-skaryna-id]', 'mouseup', self.focus);
                 self.onDOM(self.element, 'mouseup', self.focus);
-                /*
-                    self.element.addEventListener('mouseup', (event) => {
-                        let sel = window.getSelection ? window.getSelection().toString() : document.selection.createRange().text;
-                        if (sel && sel.length) {
-                            self.onSelect(event);
-                        }
-                    }, true);*/
-            });
+
+                self.element.addEventListener('mouseup', (event) => {
+                    let sel = window.getSelection ? window.getSelection().toString() : document.selection.createRange().text;
+                    if (sel && sel.length) {
+                        self.onSelect(event);
+                    }
+                }, true);
+            })
+            .then(() => self);
     }
 
-    onSelect(event) {
-
-        /*this.showToolbar();
-        this.strong();*/
+    onSelect() {
+        this.showToolbar();
+        this.strong();
     }
 
     showToolbar() {
@@ -341,16 +351,10 @@ export class Editor extends Emitter {
 
     showInjector(afterNode, possibleItems) {
         let injectorObject = new Injector(possibleItems),
-            box = afterNode.getBoundingClientRect(),
-            injectorBox;
+            box = afterNode.getBoundingClientRect();
 
-        injector = injectorObject.element;
-        document.body.appendChild(injector);
-        setTimeout(() => {
-            injectorBox = injector.getBoundingClientRect();
-            injector.style.top = (box.top) + 'px';
-            injector.style.left = (box.left - injectorBox.width) + 'px';
-        }, 0);
+        document.body.appendChild(injectorObject.element);
+        injectorObject.goTo(box.left, box.top);
         return injectorObject;
 
     }
@@ -389,7 +393,7 @@ export class Editor extends Emitter {
      * Handles external change
      * @param {object} event
      */
-    onExternalChange(event) {
+    onExternalChange() {
         if (this._rendering) {
             this._pendingState = true;
             return;
@@ -400,9 +404,23 @@ export class Editor extends Emitter {
     newItem(target) {
         let currentTarget = target,
             node = getByNode(currentTarget),
-            self = this;
+            self = this,
+            asEditor = Editor.editors.reduce((previous, current) => {
+                if (current.element === currentTarget) {
+                    return current;
+                }
+                return previous;
+            }, null);
+
         while (node !== null) {
             if (!node) {
+                if (asEditor) {
+                    let index = Editor.editors.indexOf(asEditor) + 1;
+                    if (index >= Editor.editors.length) {
+                        index = 0;
+                    }
+                    self.editNode(Editor.editors[index].element);
+                }
                 return;
             }
             if (node.defaultNewItem) {
@@ -420,6 +438,12 @@ export class Editor extends Emitter {
             }
             currentTarget = currentTarget.parentNode;
             node = getByNode(currentTarget);
+            asEditor = asEditor || Editor.editors.reduce((previous, current) => {
+                if (current.element === currentTarget) {
+                    return current;
+                }
+                return previous;
+            }, null);
         }
     }
 
@@ -443,13 +467,36 @@ export class Editor extends Emitter {
      * @param {Event} event
      */
     onKeyUp(event) {
-
+        let current = this.getCurrentElement(event.target);
         if (PREVENT.indexOf(event.keyCode) !== -1) {
             event.stopPropagation();
             event.preventDefault();
-            this.ownAction(event.keyCode, this.getCurrentElement(event.target));
+            this.ownAction(event.keyCode, current);
+        } else {
+            setTimeout(() => this.update(current), 0);
+        }
+    }
+
+    update(element) {
+        let
+            self = this,
+            doc = repository.get(self.document);
+
+        if (self.documentPath) {
+            doc = doc.set(self.documentPath, self.content);
+            repository.emit(CHANGE);
+        } else {
+            //TODO
         }
 
+        fromHTML(element)
+            .then(POM => {
+                Editor.emit('selected', {
+                    editor: this,
+                    element: element,
+                    node: POM
+                });
+            });
     }
 }
 

@@ -1,0 +1,98 @@
+:empty:after {
+  content: attr(placeholder);
+  cursor: text;
+  display: inline;
+  color: #c0c0c0; }
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #8d7868;
+  margin: 0px;
+  color: black;
+  padding: 0px; }
+  body > div {
+    padding-top: 50px;
+    max-width: 1200px;
+    width: 100%;
+    margin: auto; }
+    body > div > h1 {
+      color: #e4dee4; }
+    body > div > div {
+      box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.75), 3px 3px 3px 1px rgba(0, 0, 0, 0.5);
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+      -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      -webkit-align-content: stretch;
+      -ms-flex-line-pack: stretch;
+      align-content: stretch;
+      -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+      align-items: stretch; }
+      body > div > div > div:nth-child(1) {
+        background-color: #ede3e4;
+        -webkit-order: 0;
+        -ms-flex-order: 0;
+        order: 0;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        -webkit-align-self: auto;
+        -ms-flex-item-align: auto;
+        align-self: auto; }
+        body > div > div > div:nth-child(1) pre {
+          background-color: #52463d;
+          overflow: auto;
+          padding: 15px;
+          color: #e7dfe8;
+          font-size: 10px;
+          margin: 0px; }
+        body > div > div > div:nth-child(1) > div {
+          display: table-row; }
+          body > div > div > div:nth-child(1) > div > div,
+          body > div > div > div:nth-child(1) > div > pre {
+            display: table-cell; }
+          body > div > div > div:nth-child(1) > div > pre {
+            max-width: 300px; }
+          body > div > div > div:nth-child(1) > div > div {
+            width: 500px;
+            padding: 15px 30px; }
+      body > div > div > div:nth-child(2) {
+        background-color: #dac8af;
+        -webkit-order: 0;
+        -ms-flex-order: 0;
+        order: 0;
+        -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+        -webkit-align-self: auto;
+        -ms-flex-item-align: auto;
+        align-self: auto;
+        width: 280px;
+        padding: 10px; }
+        body > div > div > div:nth-child(2) pre {
+          white-space: pre-wrap;
+          /* css-3 */
+          white-space: -moz-pre-wrap;
+          /* Mozilla, since 1999 */
+          white-space: -pre-wrap;
+          /* Opera 4-6 */
+          white-space: -o-pre-wrap;
+          /* Opera 7 */
+          word-wrap: break-word; }
+    body > div img {
+      display: block;
+      width: 100%; }
+
+#pom {
+  font-size: 9px; }

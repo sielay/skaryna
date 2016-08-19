@@ -50,7 +50,7 @@ export function escapeRegexp(str) {
 }
 
 /**
- * @see https://github.com/sielay/bestmatch
+ * @see App
  * @param   {array} list
  * @param   {string}   filter
  * @returns {string}
@@ -79,7 +79,7 @@ export function getById(id) {
 }
 
 export function getByNode(element) {
-    if(!element) {
+    if (!element) {
         return null;
     }
     let id = element.getAttribute('data-skaryna-id');
@@ -133,6 +133,10 @@ export class Node extends Emitter {
         throw new Error('Should be implemented');
     }
 
+    set() {
+        throw new Error('Should be implemented');
+    }
+
     /**
      * @abstract
      * @throws {Error}
@@ -181,6 +185,24 @@ export class BlockNode extends Node {
         }
 
         return child;
+
+    }
+
+    set(path, value) {
+        let elements = path.split('.'),
+            index = elements.shift(),
+            rest = elements.join('.'),
+            child;
+
+        if (isNaN(index)) {
+            return null;
+        }
+
+        if (rest.length && child) {
+            return this.items[+index].set(rest, value);
+        }
+
+        this.items.splice(+index, 0, value);
 
     }
 
@@ -387,7 +409,7 @@ export class Heading extends TextNode {
 
     constructor(level, text, formats, attrs) {
         super(text, formats, attrs);
-        this.level = Math.min(6, level || 0);
+        this.level = Math.min(6, level || 1);
     }
 
     attr() {
@@ -453,6 +475,20 @@ export class Fields extends Node {
         }
 
         return child;
+
+    }
+
+    set(path, value) {
+        let elements = path.split('.'),
+            index = elements.shift(),
+            rest = elements.join('.'),
+            child;
+
+        if (rest.length && child) {
+            return this._map[index].get(rest, value);
+        }
+
+        this._map[index] = value;
 
     }
 

@@ -48,6 +48,17 @@ Carbon looks like best example to complete goals, but one, last but not least go
 
 Project will be lead in align with [POM](https://github.com/getlackey/lackey-cms/wiki/POM) definition from Lackey CMS.
 
+## Architecture
+
+```
+
+/------
+| Ed
+\---
+
+
+```
+
 ## Project Name
 
 Francysk Skaryna (pronounced [franˈt͡sɨsk skaˈrɨna]; or Skoryna; Belarusian: Францыск (Францішак[1]) Скарына; ca. 1490–before 29 January 1552) was a Belarusian humanist, physician, translator and one of the first book printers in Eastern Europe, laying the groundwork for the development of the Belarusian language. More on [Wikipedia](http://en.wikipedia.org/wiki/Francysk_Skaryna).
@@ -55,3 +66,4 @@ Francysk Skaryna (pronounced [franˈt͡sɨsk skaˈrɨna]; or Skoryna; Belarusian
 ## Licence
 
 MIT forever
+
