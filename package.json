@@ -1,6 +1,6 @@
 {
   "name": "skaryna",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "What You See is What You Mean editor inspired by projects like Medium-Editor, Lackey and ProseMirror",
   "main": "./dist",
   "scripts": {
@@ -44,7 +44,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "browserify": "^13.1.0",
     "jsondiffpatch": "^0.1.43",
-    "pageobjectmodel": "0.0.1"
+    "pageobjectmodel": "0.0.2"
   }
 }

@@ -1,4 +1,4 @@
-/* jslint esnext:true, node:true, browser:true */
+/* jslint esnext:true, node:true */
 /**
     The MIT License (MIT)
 
@@ -23,17 +23,7 @@
     SOFTWARE.
 */
 
-import {
-    Skaryna
+export {Event, Emitter} from 'pageobjectmodel';
+
+export class Skaryna {
 }
-from './skaryna';
-
-import {
-    query
-}
-from 'pageobjectmodel/src/util';
-
-query(document.body, '[data-skaryna]')
-    .forEach(element => Skaryna.initEditor(element));
-
-window.Skaryna = Skaryna;

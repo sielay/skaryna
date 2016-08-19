@@ -55,12 +55,28 @@ Project will be lead in align with [POM](https://github.com/getlackey/lackey-cms
 
 ```
 
-/------
-| Ed
-\---
-
+/-------------\
+| Data Source |
+\-------------/
+       ^
+       |
+       |
+       v
+/-------------\             /--------\
+| Repository  |-- UPDATE -->| Editor |
+\-------------/             \--------/
+       ^                         |
+       |                         |
+       \--------- CHANGE --------/
 
 ```
+
+ * `Repository` fetch data from data source and update it
+ * `Editor` on init sends static data to repository
+ * `Editor` asks repository for data
+ * `Repository` updates editors
+ * `Editor` inform repository about new nodes
+ * `Nodes` inform repository about content changes
 
 ## Project Name
 

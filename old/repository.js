@@ -26,7 +26,7 @@
 import {
     Event, Emitter
 }
-from './emitter';
+from 'pageobjectmodel/emitter';
 
 import {
     diff

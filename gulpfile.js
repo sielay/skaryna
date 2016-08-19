@@ -5,7 +5,7 @@
     Copyright (c) 2016 Łukasz Marek Sielski
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
+    of this software and associated documentation files (the 'Software'), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
@@ -14,7 +14,7 @@
     The above copyright notice and this permission notice shall be included in all
     copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -23,7 +23,8 @@
     SOFTWARE.
 */
 
-const gulp = require('gulp'),
+const
+    gulp = require('gulp'),
     eslint = require('gulp-eslint'),
     browserify = require('browserify'),
     mocha = require('gulp-mocha'),
@@ -88,10 +89,11 @@ gulp.task('sass', () => {
 
 // Without watchify
 gulp.task('browserify', ['sass'], function () {
-    var bundler = browserify('./src/browser.js', {
+    var bundler = browserify('./src/index.js', {
         debug: true,
     }).transform(babelify, {
-        "presets": ["es2015"]
+        global: true,
+        'presets': ['es2015']
     });
 
     return bundle_js(bundler);
@@ -99,9 +101,9 @@ gulp.task('browserify', ['sass'], function () {
 
 // Without sourcemaps
 gulp.task('browserify-production', function () {
-    var bundler = browserify('./src/browser.js')
+    var bundler = browserify('./src/index.js')
         .transform(babelify, {
-            "presets": ["es2015"]
+            'presets': ['es2015']
         });
 
     return bundler.bundle()
@@ -144,18 +146,18 @@ gulp.task('lint', () => {
             'test/**/*.js'
         ])
         .pipe(eslint({
-            "env": {
-                "es6": true,
-                "browser": true
+            'env': {
+                'es6': true,
+                'browser': true
             },
-            "ecmaFeatures": {
-                "sourceType": "module"
+            'ecmaFeatures': {
+                'sourceType': 'module'
             },
-            "parserOptions": {
-                "sourceType": "module",
-                "ecmaFeatures": {
-                    "jsx": true,
-                    "experimentalObjectRestSpread": true
+            'parserOptions': {
+                'sourceType': 'module',
+                'ecmaFeatures': {
+                    'jsx': true,
+                    'experimentalObjectRestSpread': true
                 }
             }
         }))

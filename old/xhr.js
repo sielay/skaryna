@@ -22,32 +22,3 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-
-import {
-    Skaryna
-}
-from './index';
-import {
-    Editor
-}
-from './editor';
-import {
-    repository
-}
-from './repository';
-import {
-    XHR
-}
-from './xhr';
-
-Skaryna.Editor = Editor;
-Skaryna.repository = repository;
-Skaryna.XHR = XHR;
-
-window.Skaryna = Skaryna;
-
-if (Array.isArray(window.___Skaryna)) {
-    window.___Skaryna.forEach((callback) => {
-        callback.apply(window);
-    });
-}

@@ -22,18 +22,33 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-
+/*
 import {
     Skaryna
 }
-from './skaryna';
-
+from './index';
 import {
-    query
+    Editor
 }
-from 'pageobjectmodel/src/util';
+from './editor';
+import {
+    repository
+}
+from './repository';
+import {
+    XHR
+}
+from './xhr';
 
-query(document.body, '[data-skaryna]')
-    .forEach(element => Skaryna.initEditor(element));
+Skaryna.Editor = Editor;
+Skaryna.repository = repository;
+Skaryna.XHR = XHR;
 
 window.Skaryna = Skaryna;
+
+if (Array.isArray(window.___Skaryna)) {
+    window.___Skaryna.forEach((callback) => {
+        callback.apply(window);
+    });
+}
+*/

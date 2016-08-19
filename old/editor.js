@@ -26,7 +26,7 @@
 import {
     Event, Emitter
 }
-from './emitter';
+from 'pageobjectmodel/emitter';
 
 import {
     arraize
@@ -37,21 +37,13 @@ import {
 }
 from './repository';
 import {
-    toHTML
-}
-from './serializer/toHTML';
-import {
-    toPOM
-}
-from './serializer/toPOM';
-import {
-    fromHTML
-}
-from './parser/fromHTML';
-import {
+    toHTML,
+    toPOM,
+    fromHTML,
     fromPOM
 }
-from './parser/fromPOM';
+from 'pageobjectmodel';
+
 import {
     XHR
 }
@@ -62,7 +54,7 @@ import {
     getById,
     getByNode
 }
-from './document';
+from 'pageobjectmodel/document';
 
 const BACKSPACE = 8,
     TAB = 9,

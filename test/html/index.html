@@ -82,49 +82,10 @@
         </div>
     </div>
     <a href="https://github.com/sielay/skaryna"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-    <script id="script">
-        window.___Skaryna = window.___Skaryna || [];
-
-        function format(pom) {
-            //console.log(pom);
-        }
-
-        window.___Skaryna.push(function () {
-
-            Skaryna.Editor
-                .load('./document.json')
-                .then(() => {
-
-                    Skaryna.Editor.on('selected', event => {
-                        document.getElementById('current-element').innerText = event.data.element.outerHTML;
-                        document.getElementById('current-node').innerText = JSON.stringify(event.data.node);
-                    });
-                    Skaryna.Editor
-                        .initEditors(window.document.body)
-                        .then(() => {
-                            document.querySelector('#pom').innerText = JSON.stringify(Skaryna.repository.toJSON(), null, 2);
-                            Skaryna.repository.on('change', function (event) {
-                                document.querySelector('#pom').innerText = JSON.stringify(Skaryna.repository.toJSON(), null, 2);
-                                Skaryna.repository
-                                    .diff()
-                                    .then(delta => {
-                                        document.querySelector('#diff').innerText = JSON.stringify(delta, null, 2);
-                                    });
-                            });
-                        });
-                });
-
-            Skaryna.XHR
-                .get('./document.json')
-                .then((content) => {
-                    //document.querySelector('[data-skaryna-json]').innerText = content;
-                })
-
-        });
-        //document.querySelector('[data-skaryna-html]').innerText = document.querySelector('main').innerHTML;
-        document.querySelector('[data-skaryna-script]').innerText = document.getElementById('script').innerText;
-    </script>
     <script type="application/javascript" src="/skaryna.js"></script>
+    <script type="application/javascript">
+        top.Skaryna.load('./document.json');
+    </script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

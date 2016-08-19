@@ -25,7 +25,7 @@
 import {
     Emitter
 }
-from './emitter';
+from 'pageobjectmodel/emitter';
 
 let styles;
 
