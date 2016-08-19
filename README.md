@@ -10,7 +10,7 @@
  * [Carbon](https://github.com/manshar/carbon)
  * [ProseMirror](prosemirror.net)
 
-## Golas
+## Goals
 
  * Opinionated and restrictive
    * force structure
@@ -30,6 +30,9 @@
  * Lack of dependencies
  * Multiple documents
  * Not allow inline images
+   * That means image can't be added inside paragraph, heading or other text node
+   * Still can be positioned around text with styles
+   * Restriction is only semantic
 
  * TextNodes
   * Text - standalone
