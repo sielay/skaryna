@@ -48,6 +48,11 @@ import {
 }
 from 'pageobjectmodel/src/emitter';
 
+import {
+    diff
+}
+from 'jsondiffpatch';
+
 const DEFAULT_DOCUMENT = '#default';
 
 const
@@ -62,6 +67,16 @@ const
     DOWN = 40,
     DELETE = 46,
     PREVENT = [ENTER];
+
+const STYLES = `
+[data-skaryna], [data-skaryna] * { outline: none; }
+`;
+
+(() => {
+    let style = document.createElement('style');
+    style.innerText = STYLES;
+    document.body.appendChild(style);
+})();
 
 /**
  * @class
@@ -163,19 +178,31 @@ export class Repository extends Emitter {
     }
 
     /**
+     * @property {object} cache hashmap
+     */
+    static get cache() {
+        this._cache = this._cache || {};
+        return this._cache;
+    }
+
+    /**
      * Reports change/update in document
      * @param {string} doc             name of document
      * @param {string|undefined} path  path in document or undefined if whole document has updated
+     * @param {boolean} flushCache     if should clear cached version (used for diff)
      * @param {mixed}  value           new content
      */
-    static report(doc, path, value) {
-        let docs = this.documents;
+    static report(doc, path, value, flushCache) {
+        let docs = this.documents,
+            cache = this.cache;
 
         if (path === undefined) {
             docs[doc] = value;
+            cache[doc] = value.toJSON();
         } else {
             if (!docs.hasOwnProperty(doc)) {
                 docs[doc] = new Fields();
+                cache[doc] = docs[doc].toJSON();
             }
             docs[doc].set(path, value);
         }
@@ -245,13 +272,14 @@ export class Skaryna {
             node = node.best(this._config.variant || '*');
         }
 
-        if(!node) {
+        if (!node) {
             return;
         }
 
         return node.decorate(self.element)
             .then(() => {
                 self.element.addEventListener('keydown', self.onKeyUp.bind(self));
+                self.element.addEventListener('mouseup', self.onMouseDown.bind(self));
             });
     }
 
@@ -275,6 +303,13 @@ export class Skaryna {
         }
         node = this.getEditableNode(node);
         document.querySelector('#current-element').innerText = node.outerHTML;
+        fromHTML(node)
+            .then(POM => {
+
+                document.querySelector('#current-node').innerText = JSON.stringify(POM, null, 2);
+
+                document.querySelector('#diff').innerHTML = JSON.stringify(diff(JSON.parse(JSON.stringify(Repository.documents)),Repository.cache));
+            });
         return node;
     }
 
@@ -298,6 +333,10 @@ export class Skaryna {
         } else {
             setTimeout(() => this.elementUpdated(current), 0);
         }
+    }
+
+    onMouseDown(event) {
+        this.getCurrentElement(event.target);
     }
 
     onRepositoryUpdate(event) {
