@@ -68,6 +68,9 @@ const
     DELETE = 46,
     PREVENT = [ENTER];
 
+const
+    CHANGE = 'change';
+
 const STYLES = `
 [data-skaryna], [data-skaryna] * { outline: none; }
 `;
@@ -189,10 +192,9 @@ export class Repository extends Emitter {
      * Reports change/update in document
      * @param {string} doc             name of document
      * @param {string|undefined} path  path in document or undefined if whole document has updated
-     * @param {boolean} flushCache     if should clear cached version (used for diff)
      * @param {mixed}  value           new content
      */
-    static report(doc, path, value, flushCache) {
+    static report(doc, path, value) {
         let docs = this.documents,
             cache = this.cache;
 
@@ -211,7 +213,6 @@ export class Repository extends Emitter {
             path: path,
             id: value.name
         });
-        document.querySelector('#pom').innerText = JSON.stringify(this.documents, null, 2);
     }
 }
 
@@ -227,6 +228,15 @@ export class Skaryna {
     static get editors() {
         this._editors = this._editors || [];
         return this._editors;
+    }
+
+    static set currentElement(value) {
+        Skaryna._currentElement = value;
+        Skaryna.emit('focus');
+    }
+
+    static get currentElement() {
+        return Skaryna._currentElement || null;
     }
 
     static initEditor(element) {
@@ -250,6 +260,7 @@ export class Skaryna {
     }
 
     constructor(element, config) {
+        //super();
         this._config = config;
         this.element = element;
         Repository.on('change', this.onRepositoryUpdate.bind(this));
@@ -299,17 +310,11 @@ export class Skaryna {
         node = sel.focusNode;
 
         if (node === this.element) {
+            Skaryna.currentElement = node;
             return this.element;
         }
         node = this.getEditableNode(node);
-        document.querySelector('#current-element').innerText = node.outerHTML;
-        fromHTML(node)
-            .then(POM => {
-
-                document.querySelector('#current-node').innerText = JSON.stringify(POM, null, 2);
-
-                document.querySelector('#diff').innerHTML = JSON.stringify(diff(JSON.parse(JSON.stringify(Repository.documents)),Repository.cache));
-            });
+        Skaryna.currentElement = node;
         return node;
     }
 
@@ -325,6 +330,7 @@ export class Skaryna {
      * @param {Event} event
      */
     onKeyUp(event) {
+
         let current = this.getCurrentElement(event.target);
         if (PREVENT.indexOf(event.keyCode) !== -1) {
             event.stopPropagation();
@@ -340,7 +346,9 @@ export class Skaryna {
     }
 
     onRepositoryUpdate(event) {
-        if (event.data.doc !== this._config.doc) return;
+        if (event.data.doc !== this._config.doc) {
+            return;
+        }
         if (event.data.path === undefined) {
             this.redrawEditor();
         }
@@ -355,3 +363,6 @@ export class Skaryna {
             });
     }
 }
+
+
+Skaryna.Repository = Repository;
