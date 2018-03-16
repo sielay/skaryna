@@ -1,0 +1,281 @@
+{
+    "title": "IJekyllConfig",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },
+        "author": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "baseurl": {
+            "type": "string"
+        },
+        "url": {
+            "type": "string"
+        },
+        "date_format": {
+            "type": "string"
+        },
+        "header_pages": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "google_verification": {
+            "type": "string"
+        },
+        "google_analytics": {
+            "type": "string"
+        },
+        "google_tag_manager": {
+            "type": "string"
+        },
+        "bing_verification": {
+            "type": "string"
+        },
+        "animated": {
+            "type": "boolean"
+        },
+        "show_related_posts": {
+            "type": "boolean"
+        },
+        "show_post_footers": {
+            "type": "boolean"
+        },
+        "show_social_icons": {
+            "type": "boolean"
+        },
+        "ajaxify_contact_form": {
+            "type": "boolean"
+        },
+        "enable_mathjax": {
+            "type": "boolean"
+        },
+        "extended_fonts": {
+            "type": "boolean"
+        },
+        "enable_anchorjs": {
+            "type": "boolean"
+        },
+        "post_preview_image": {
+            "type": "boolean"
+        },
+        "fb_page": {
+            "type": "boolean"
+        },
+        "fb_page_id": {
+            "type": "string"
+        },
+        "disqus_shortname": {
+            "type": "string"
+        },
+        "txtpen_sitename": {
+            "type": "string"
+        },
+        "facebook_comments": {
+            "type": "string"
+        },
+        "facebook_appid": {
+            "type": "string"
+        },
+        "facebook_comments_number": {
+            "type": "number"
+        },
+        "github_username": {
+            "type": "string"
+        },
+        "reddit_username": {
+            "type": "string"
+        },
+        "bitbucket_username": {
+            "type": "string"
+        },
+        "stackoverflow_id": {
+            "type": "string"
+        },
+        "twitter_username": {
+            "type": "string"
+        },
+        "skype_username": {
+            "type": "string"
+        },
+        "steam_nickname": {
+            "type": "string"
+        },
+        "google_plus_id": {
+            "type": "string"
+        },
+        "linkedin_username": {
+            "type": "string"
+        },
+        "angellist_username": {
+            "type": "string"
+        },
+        "medium_id": {
+            "type": "string"
+        },
+        "bitcoin_url": {
+            "type": "string"
+        },
+        "paypal_url": {
+            "type": "string"
+        },
+        "flattr_button": {
+            "type": "string"
+        },
+        "telegram_username": {
+            "type": "string"
+        },
+        "vk_id": {
+            "type": "string"
+        },
+        "show_sharing_icons": {
+            "type": "boolean"
+        },
+        "share_facebook": {
+            "type": "boolean"
+        },
+        "share_twitter": {
+            "type": "boolean"
+        },
+        "share_googleplus": {
+            "type": "boolean"
+        },
+        "share_linkedin": {
+            "type": "boolean"
+        },
+        "share_digg": {
+            "type": "boolean"
+        },
+        "share_tumblr": {
+            "type": "boolean"
+        },
+        "share_reddit": {
+            "type": "boolean"
+        },
+        "share_stumbleupon": {
+            "type": "boolean"
+        },
+        "share_hackernews": {
+            "type": "boolean"
+        },
+        "text": {
+            "type": "object",
+            "properties": {
+                "pagination": {
+                    "type": "object",
+                    "properties": {
+                        "newer": {
+                            "type": "string"
+                        },
+                        "older": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "share_buttons": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string"
+                        },
+                        "facebook": {
+                            "type": "string"
+                        },
+                        "twitter": {
+                            "type": "string"
+                        },
+                        "googleplus": {
+                            "type": "string"
+                        },
+                        "linkedin": {
+                            "type": "string"
+                        },
+                        "digg": {
+                            "type": "string"
+                        },
+                        "tumblr": {
+                            "type": "string"
+                        },
+                        "reddit": {
+                            "type": "string"
+                        },
+                        "stumbleupon": {
+                            "type": "string"
+                        },
+                        "hackernews": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "post": {
+                    "type": "object",
+                    "properties": {
+                        "updated": {
+                            "type": "string"
+                        },
+                        "minute_read": {
+                            "type": "string"
+                        },
+                        "related_posts": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "index": {
+                    "type": "object",
+                    "propeties": {
+                        "coming_soon": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "contact": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "subject": {
+                            "type": "string"
+                        },
+                        "submit": {
+                            "type": "string"
+                        },
+                        "ajax": {
+                            "type": "object",
+                            "properties": {
+                                "sending": {
+                                    "type": "string"
+                                },
+                                "sent": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "thanks": {
+                            "type": "string"
+                        },
+                        "og_locale": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

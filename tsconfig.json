@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "noStrictGenericChecks": true,
+        "skipLibCheck": true,
+        "types": [
+            "node",
+            "react",
+            "react-dom",
+            "react-redux",
+            "rxjs"
+        ],
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": false,
+        "noEmit": true,
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "sourceMap": false,
+        "lib": [
+            "es5",
+            "es2015",
+            "es2017",
+            "dom",
+            "scripthost"
+        ]
+    },
+    "include": [
+        "./lib"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
